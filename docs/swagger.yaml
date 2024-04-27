@@ -1,0 +1,186 @@
+openapi: 3.0.3
+info:
+  title: Car
+  version: 0.0.1
+servers:
+  - url: http://localhost:8034
+paths:
+  /car/{columnName}:
+    get:
+      parameters:
+       - in: path
+         name: columnName
+         required: true
+         schema:
+           type: string
+         description: column name that should be filtered by.
+       - in: query
+         name: param
+         required: true
+         schema:
+           type: string
+         description: Accept the value that columnName stores.
+       - in: query
+         name: limit
+         required: false
+         schema:
+           type: integer
+           minimum: 1
+           default: 3
+         description: Limit of how many rows should be retrieved from database
+       - in: query
+         name: offset
+         required: false
+         schema:
+           type: integer
+           default: 1
+           minimum: 1
+         description: Offsetting page
+      responses:
+       "200":
+         description: Ok
+         content:
+           application/json:
+             schema:
+             $ref: '#/components/schemas/Car'
+       "400":
+          description: Bad request
+       "500":
+          description: Internal Server Error
+
+  /car/delete/{car_id}:
+    delete:
+      parameters:
+      - in: path
+        name: car_id
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Ok
+        "400":
+          description: Bad request
+        "500":
+          description: Internal Server Error
+  /car/update/{car_id}:
+    put:
+      parameters:
+        - in: path
+          name: car_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Car'
+      responses:
+        "200":
+          description: Ok
+        "400":
+          description: Bad request
+        "500":
+          description: Internal Server Error
+  /car/add:
+    post:
+      requestBody:
+         content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegNums'
+
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExternalCar'
+        "400":
+          description: Bad request
+        "500":
+          description: Internal Server Error
+components:
+    schemas:
+      RegNums:
+        type: array
+        properties:
+          regNum:
+            type: string
+            example: X123XX150
+      Car:
+        type: object
+        properties:
+         id:
+           type: integer
+           example: 1
+         regNum:
+           type: string
+           example: X123XX159
+         mark:
+           type: string
+           example: Lada
+         model:
+            type: string
+            example: Vesta
+         year:
+           type: integer
+           example: 2000
+         owner_id:
+           type: integer
+           example: 1
+         owner:
+           $ref: '#/components/schemas/People'
+      People:
+        type: object
+        properties:
+          name:
+            type: string
+          surname:
+            type: string
+          patronymic:
+            type: string
+      ExternalCar:
+        type: object
+        properties:
+          id:
+            type: integer
+            example: 1
+          regNum:
+            type: string
+            example: X123XX159
+          mark:
+            type: string
+            example: Lada
+          model:
+            type: string
+            example: Vesta
+          year:
+            type: integer
+            example: 2000
+          owner:
+            $ref: '#/components/schemas/People'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
